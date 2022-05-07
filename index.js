@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const app = express()
 
@@ -43,6 +43,15 @@ async function run() {
 
 
         })
+
+        //get api for single products by id
+        app.get('/products/:id' , async(req,res)=>{
+            const id = req.params.id;
+            const query={_id: ObjectId(id)};
+            const product = await productsCollection.findOne(query);
+            res.send(product);
+        })
+        
 
 
     } finally {
