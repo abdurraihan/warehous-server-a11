@@ -30,6 +30,7 @@ async function run() {
 
         await client.connect();
         const productsCollection = client.db('warehous').collection('products');
+        const addItemCollection = client.db('warehous').collection('myItem');
 
 
         //get api for all products
@@ -72,6 +73,7 @@ async function run() {
             res.send(result);
         })
 
+        // delete api
         app.delete('/products/:id' , async(req , res)=>{
 
             const id = req.params.id;
@@ -80,6 +82,14 @@ async function run() {
             res.send(result);
         })
         
+        // post api
+
+        app.post('/addItem', async(req , res)=>{
+            const myItem = req.body;
+            console.log(myItem);
+            const result = await addItemCollection.insertOne(myItem);
+            res.send(result);
+        }) 
 
 
     } finally {
