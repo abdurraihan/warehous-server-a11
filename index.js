@@ -86,10 +86,30 @@ async function run() {
 
         app.post('/addItem', async(req , res)=>{
             const myItem = req.body;
-            console.log(myItem);
+            //console.log(myItem);
             const result = await addItemCollection.insertOne(myItem);
             res.send(result);
         }) 
+
+        
+        app.get('/myItem' , async(req, res)=>{
+
+            const email = req.query.email;
+            //console.log(email);
+            const query = {email:email};
+            const cursor =  addItemCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        })
+
+        app.delete('/myItem/:id' , async(req , res)=>{
+
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await addItemCollection.deleteOne(query)
+            res.send(result);
+        })
+        
 
 
     } finally {
